@@ -9,7 +9,8 @@ import {
   Mail, 
   HelpCircle, 
   Check, 
-  Lock
+  Lock,
+  ExternalLink
 } from 'lucide-react';
 
 const App = () => {
@@ -40,7 +41,9 @@ const App = () => {
     reveals.forEach(el => observer.observe(el));
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body && document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
       reveals.forEach(el => observer.unobserve(el));
     };
   }, []);
@@ -59,8 +62,8 @@ const App = () => {
           --bg-dark: #070503;
           --accent: #d4af37;
           --accent-glow: rgba(212, 175, 55, 0.15);
-          --glass: rgba(10, 8, 6, 0.88);
-          --glass-border: rgba(212, 175, 55, 0.15);
+          --glass: rgba(10, 8, 6, 0.94);
+          --glass-border: rgba(212, 175, 55, 0.12);
         }
 
         body {
@@ -78,7 +81,7 @@ const App = () => {
           height: 100vh;
           z-index: -1;
           background-image: 
-            linear-gradient(to bottom, rgba(7, 5, 3, 0.75), rgba(7, 5, 3, 0.98)),
+            linear-gradient(to bottom, rgba(7, 5, 3, 0.65), rgba(7, 5, 3, 0.98)),
             url('https://images.travelprox.com/mrplumberman/herowall.png');
           background-size: cover;
           background-position: center;
@@ -92,23 +95,23 @@ const App = () => {
           width: 100vw;
           height: 100vh;
           background: 
-            radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
-            radial-gradient(circle at 80% 110%, rgba(120, 72, 30, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+            radial-gradient(circle at 80% 110%, rgba(120, 72, 30, 0.08) 0%, transparent 50%);
           z-index: -1;
         }
 
         .glass-card {
           background: var(--glass);
-          backdrop-filter: blur(20px);
+          backdrop-filter: blur(32px);
           border: 1px solid var(--glass-border);
           transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .glass-card:not(.coming-soon):hover {
-          border-color: rgba(212, 175, 55, 0.5);
-          background: rgba(212, 175, 55, 0.12);
-          transform: translateY(-4px);
-          box-shadow: 0 40px 80px -15px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.05);
+          border-color: rgba(212, 175, 55, 0.4);
+          background: rgba(212, 175, 55, 0.08);
+          transform: translateY(-2px);
+          box-shadow: 0 30px 60px -15px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.03);
         }
 
         .marquee-wrapper {
@@ -130,8 +133,8 @@ const App = () => {
 
         .reveal {
           opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+          transform: translateY(15px);
+          transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .reveal.active {
@@ -139,13 +142,13 @@ const App = () => {
           transform: translateY(0);
         }
 
-        .symbol-pulse {
-          animation: symbol-glow 4s ease-in-out infinite;
+        .hero-aura {
+          animation: aura-pulse 6s ease-in-out infinite;
         }
 
-        @keyframes symbol-glow {
-          0%, 100% { filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.15)) brightness(1); }
-          50% { filter: drop-shadow(0 0 55px rgba(212, 175, 55, 0.4)) brightness(1.1); }
+        @keyframes aura-pulse {
+          0%, 100% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.1)) brightness(1); }
+          50% { filter: drop-shadow(0 0 45px rgba(212, 175, 55, 0.25)) brightness(1.03); }
         }
 
         /* Kit Form Overrides */
@@ -156,11 +159,11 @@ const App = () => {
           margin: 0 auto !important;
         }
         .formkit-form[data-uid="6b0b0fa093"] .formkit-input {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border: 1px solid rgba(212, 175, 55, 0.2) !important;
+          background: rgba(255, 255, 255, 0.03) !important;
+          border: 1px solid rgba(212, 175, 55, 0.15) !important;
           color: white !important;
-          border-radius: 14px !important;
-          padding: 16px !important;
+          border-radius: 12px !important;
+          padding: 14px !important;
           font-family: 'Inter', sans-serif !important;
         }
         .formkit-form[data-uid="6b0b0fa093"] .formkit-submit {
@@ -169,94 +172,121 @@ const App = () => {
           font-weight: 900 !important;
           text-transform: uppercase !important;
           letter-spacing: 0.15em !important;
-          border-radius: 14px !important;
+          border-radius: 12px !important;
           width: 100% !important;
-          margin-top: 10px !important;
-          padding: 18px !important;
+          margin-top: 8px !important;
+          padding: 16px !important;
           transition: transform 0.2s ease, filter 0.2s ease !important;
         }
-        .formkit-form[data-uid="6b0b0fa093"] .formkit-submit:hover {
-          transform: scale(1.01) !important;
-          filter: brightness(1.1) !important;
-        }
-        .formkit-powered-by-convertkit {
-          display: none !important;
-        }
+        .formkit-powered-by-convertkit { display: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
           .marquee-content { animation: none; }
           .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+        }
+
+        .callista-badge {
+          position: fixed;
+          bottom: 1.5rem;
+          right: 1.5rem;
+          z-index: 100;
+          text-decoration: none;
         }
       `}</style>
 
       <div className="background-container"></div>
       <div className="ambient-glow"></div>
 
-      <main className="max-w-2xl mx-auto px-6 pt-8 md:pt-16 pb-24 relative z-10">
+      {/* Floating Callista Badge */}
+      <a 
+        href="https://www.callistadigital.com" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="callista-badge glass-card px-3.5 py-2 rounded-xl flex items-center gap-2.5 group overflow-hidden border-white/5 opacity-80 hover:opacity-100"
+      >
+        <span className="mono text-[8px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-amber-500 transition-colors">
+          Built by Callista Digital
+        </span>
+        <ExternalLink className="w-2.5 h-2.5 text-gray-500 group-hover:text-amber-500 transition-colors" />
+      </a>
+
+      {/* Main Content Start */}
+      <main className="max-w-2xl mx-auto px-6 pt-4 md:pt-8 pb-20 relative z-10">
         
-        {/* Inventory Status Badge - Tucked higher */}
-        <div className="flex justify-center mb-6 reveal">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/5 border border-amber-500/10 backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
+        {/* Status Badge */}
+        <div className="flex justify-center mb-4 reveal active">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/5 border border-amber-500/10 backdrop-blur-md">
+            <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
             </span>
-            <span className="mono text-[9px] font-bold text-amber-500 uppercase tracking-[0.3em]">
+            <span className="mono text-[8px] font-bold text-amber-500 uppercase tracking-[0.3em]">
               Dispatch Protocol: Active
             </span>
           </div>
         </div>
 
-        {/* Hero Section - Optimized Spacing */}
-        <section className="text-center mb-20 reveal">
-          <div className="relative inline-block mb-6">
-            <div className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center symbol-pulse mx-auto">
+        {/* Hero Section */}
+        <section className="text-center mb-10 reveal active">
+          {/* Brand Symbol Profile Size */}
+          <div className="flex justify-center mb-4">
+            <div className="relative p-1 rounded-full border border-amber-500/20 bg-gradient-to-b from-amber-500/10 to-transparent">
               <img 
                 src="https://images.travelprox.com/mrplumberman/symbol.png" 
-                alt="Mr Plumber Man Symbol" 
-                className="w-full h-full object-contain"
+                alt="Plumber Man Seal" 
+                className="w-24 h-24 md:w-32 md:h-32 object-contain filter drop-shadow-[0_0_15px_rgba(212,175,55,0.2)]"
               />
             </div>
           </div>
           
           <div className="max-w-xl mx-auto">
-            <h1 className="text-white text-5xl md:text-7xl font-black tracking-tighter mb-3 uppercase italic leading-none">
+            <h1 className="text-white text-4xl md:text-6xl font-black tracking-tighter mb-2 uppercase italic leading-none">
               Mr Plumber Man<span className="text-amber-500">.</span>
             </h1>
             
-            <p className="mono text-[10px] md:text-[11px] font-bold text-amber-500/90 uppercase tracking-[0.7em] mb-8">
+            <p className="mono text-[9px] md:text-[10px] font-bold text-amber-500 uppercase tracking-[0.6em] mb-3">
               Vitality • Energy • Performance
             </p>
 
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight uppercase">
+            <h2 className="text-xl md:text-3xl font-black text-white mb-4 leading-tight tracking-tight uppercase">
               Keep the pipes <span className="text-amber-500">pipin’</span>
             </h2>
-            
-            <p className="text-gray-300 text-base md:text-lg mb-10 max-w-md mx-auto leading-relaxed font-medium">
-              Premium vitality supplements engineered for peak stamina and elite confidence.
-            </p>
 
-            <div className="flex justify-center max-w-[280px] mx-auto">
-              <div className="relative group w-full">
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-600 text-black text-[9px] font-black px-3 py-0.5 rounded shadow-2xl z-20 tracking-[0.2em] uppercase">
+            {/* Pristine Hero Visual - High Tight Placement */}
+            <div className="relative mb-2 -mt-4">
+              <div className="absolute inset-0 bg-amber-500/10 blur-[60px] rounded-full scale-75 opacity-15"></div>
+              <img 
+                src="https://images.travelprox.com/mrplumberman/hero.png" 
+                alt="Mr Plumber Man Showcase" 
+                className="relative z-10 w-full max-w-[440px] mx-auto hero-aura"
+              />
+            </div>
+            
+            <div className="flex flex-col gap-6 items-center">
+              <p className="text-gray-300 text-sm md:text-base max-w-sm mx-auto leading-relaxed font-medium">
+                Premium vitality supplements engineered for peak stamina and elite confidence.
+              </p>
+
+              <div className="relative group w-full max-w-[240px]">
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-amber-600 text-black text-[8px] font-black px-2 py-0.5 rounded shadow-xl z-20 tracking-widest uppercase">
                   ENTER STORE
                 </span>
                 <button 
                   onClick={handleManualRedirect}
-                  className="bg-amber-500 text-black w-full px-8 py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 group hover:scale-[1.03] transition-all duration-300 shadow-[0_25px_50px_-15px_rgba(212,175,55,0.4)] uppercase"
+                  className="bg-amber-500 text-black w-full px-6 py-4 rounded-xl font-black text-base flex items-center justify-center gap-3 group hover:scale-[1.02] transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(212,175,55,0.3)] uppercase italic"
                 >
-                  Shop Now <ShoppingCart className="w-5 h-5" />
+                  Shop Now <ShoppingCart className="w-4 h-4" />
                 </button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Mailing List Form - Pristine Positioning */}
-        <section className="mb-24 reveal text-center">
-          <div className="max-w-md mx-auto p-10 glass-card rounded-[3rem] shadow-[0_0_100px_rgba(0,0,0,0.6)] border-amber-500/20">
-            <h2 className="text-2xl font-black mb-2 uppercase tracking-tighter italic text-amber-500">Privileged Access</h2>
-            <p className="text-gray-400 mb-8 text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
+        {/* Mailing List Form */}
+        <section className="mb-16 reveal text-center">
+          <div className="max-w-md mx-auto p-8 glass-card rounded-[2.5rem] shadow-[0_0_60px_rgba(0,0,0,0.5)] border-amber-500/15">
+            <h2 className="text-xl font-black mb-1 uppercase tracking-tight italic text-amber-500">Privileged Access</h2>
+            <p className="text-gray-400 mb-6 text-xs font-medium leading-relaxed max-w-[240px] mx-auto">
               Private discounts, restock alerts, and exclusive performance protocols.
             </p>
             
@@ -272,7 +302,7 @@ const App = () => {
               >
                 <div data-style="clean">
                   <ul className="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
-                  <div data-element="fields" data-stacked="false" className="seva-fields formkit-fields flex flex-col gap-3">
+                  <div data-element="fields" data-stacked="false" className="seva-fields formkit-fields flex flex-col gap-2">
                     <div className="formkit-field">
                       <input 
                         className="formkit-input w-full" 
@@ -294,7 +324,7 @@ const App = () => {
                     </div>
                     <button 
                       data-element="submit" 
-                      className="formkit-submit py-4"
+                      className="formkit-submit"
                     >
                       <div className="formkit-spinner"><div></div><div></div><div></div></div>
                       <span>Subscribe</span>
@@ -307,10 +337,10 @@ const App = () => {
         </section>
 
         {/* Ticker Strip */}
-        <section className="mb-24 reveal">
-          <div className="marquee-wrapper glass-card py-5 rounded-2xl border-amber-500/5">
+        <section className="mb-16 reveal">
+          <div className="marquee-wrapper glass-card py-4 rounded-xl border-amber-500/5">
             <div className="marquee-content uppercase italic">
-              <span className="mono text-[10px] font-black text-amber-500/50 uppercase tracking-[0.35em] flex items-center gap-12">
+              <span className="mono text-[8px] font-black text-amber-500/40 uppercase tracking-[0.4em] flex items-center gap-12">
                 <span>Energy</span> <span>•</span> 
                 <span>Drive</span> <span>•</span> 
                 <span>Performance</span> <span>•</span> 
@@ -318,7 +348,7 @@ const App = () => {
                 <span>Confidence</span> <span>•</span>
                 <span>Ready when it counts</span> <span>•</span>
               </span>
-              <span className="mono text-[10px] font-black text-amber-500/50 uppercase tracking-[0.35em] flex items-center gap-12">
+              <span className="mono text-[8px] font-black text-amber-500/40 uppercase tracking-[0.4em] flex items-center gap-12">
                 <span>Energy</span> <span>•</span> 
                 <span>Drive</span> <span>•</span> 
                 <span>Performance</span> <span>•</span> 
@@ -330,104 +360,100 @@ const App = () => {
           </div>
         </section>
 
-        {/* Featured Products */}
-        <section id="shop" className="mb-24 reveal">
+        {/* Catalog Section */}
+        <section id="shop" className="mb-20 reveal">
           <div className="flex items-center justify-between mb-8 px-1">
-            <h3 className="mono text-[11px] uppercase tracking-[0.5em] text-gray-500 font-bold italic">Engineering Catalog</h3>
+            <h3 className="mono text-[10px] uppercase tracking-[0.5em] text-gray-500 font-bold italic">Engineering Catalog</h3>
             <span className="h-[1px] flex-1 bg-white/5 ml-8"></span>
           </div>
-          <div className="grid gap-5">
-            {/* PRESSURE */}
+          <div className="grid gap-4">
             <button 
               onClick={handleManualRedirect}
-              className="glass-card p-8 rounded-[2.5rem] flex flex-col md:flex-row md:items-center gap-6 group text-left w-full border-amber-500/10"
+              className="glass-card p-6 rounded-[2rem] flex flex-col md:flex-row md:items-center gap-5 group text-left w-full border-amber-500/10"
             >
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0 border border-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-                <Wrench className="w-7 h-7" />
+              <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0 border border-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
+                <Wrench className="w-6 h-6" />
               </div>
               <div className="flex-1">
-                <h4 className="text-xl font-black text-white mb-1 group-hover:text-amber-500 transition-colors italic uppercase tracking-tight">PRESSURE</h4>
-                <p className="text-gray-400 text-sm leading-relaxed font-medium">Flagship protocol for optimal blood flow and endurance.</p>
+                <h4 className="text-lg font-black text-white mb-0.5 group-hover:text-amber-500 transition-colors italic uppercase tracking-tight">PRESSURE</h4>
+                <p className="text-gray-400 text-xs leading-relaxed font-medium">Flagship protocol for optimal blood flow and endurance.</p>
               </div>
-              <span className="text-[10px] font-black text-black bg-amber-500 px-6 py-2.5 rounded-xl group-hover:scale-110 transition-transform uppercase tracking-widest">Shop</span>
+              <span className="text-[9px] font-black text-black bg-amber-500 px-5 py-2 rounded-lg group-hover:scale-105 transition-transform uppercase tracking-widest">Shop</span>
             </button>
 
-            {/* PRIME TIME */}
             <button 
               onClick={handleManualRedirect}
-              className="glass-card p-8 rounded-[2.5rem] flex flex-col md:flex-row md:items-center gap-6 group text-left w-full border-white/5"
+              className="glass-card p-6 rounded-[2rem] flex flex-col md:flex-row md:items-center gap-5 group text-left w-full border-white/5"
             >
-              <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-400 shrink-0 border border-orange-500/10 group-hover:bg-orange-500/20 transition-colors">
-                <Flame className="w-7 h-7" />
+              <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 shrink-0 border border-orange-500/10 group-hover:bg-orange-500/20 transition-colors">
+                <Flame className="w-6 h-6" />
               </div>
               <div className="flex-1">
-                <h4 className="text-xl font-black text-white mb-1 group-hover:text-orange-400 transition-colors italic uppercase tracking-tight">PRIME TIME</h4>
-                <p className="text-gray-400 text-sm leading-relaxed font-medium">Fast-acting booster designed for high-stakes performance.</p>
+                <h4 className="text-lg font-black text-white mb-0.5 group-hover:text-orange-400 transition-colors italic uppercase tracking-tight">PRIME TIME</h4>
+                <p className="text-gray-400 text-xs leading-relaxed font-medium">Fast-acting booster designed for high-stakes performance.</p>
               </div>
-              <span className="text-[10px] font-black text-black bg-white px-6 py-2.5 rounded-xl group-hover:bg-amber-500 transition-all uppercase tracking-widest">Shop</span>
+              <span className="text-[9px] font-black text-black bg-white px-5 py-2 rounded-lg group-hover:bg-amber-500 transition-all uppercase tracking-widest">Shop</span>
             </button>
 
-            {/* MACA DADDY (Coming Soon) */}
-            <div className="glass-card p-8 rounded-[2.5rem] flex flex-col md:flex-row md:items-center gap-6 group opacity-50 border-white/5 bg-white/[0.01]">
-              <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-gray-600 shrink-0">
-                <Lock className="w-7 h-7" />
+            <div className="glass-card p-6 rounded-[2rem] flex flex-col md:flex-row md:items-center gap-5 group opacity-40 border-white/5 bg-white/[0.01]">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-600 shrink-0">
+                <Lock className="w-6 h-6" />
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <h4 className="text-xl font-black text-white/50 italic uppercase tracking-tight">MACA DADDY</h4>
-                  <span className="text-[9px] font-black bg-white/10 text-gray-500 border border-white/10 px-2 py-0.5 rounded uppercase tracking-wider">Locked</span>
+                <div className="flex items-center gap-3 mb-0.5">
+                  <h4 className="text-lg font-black text-white/50 italic uppercase tracking-tight">MACA DADDY</h4>
+                  <span className="text-[8px] font-black bg-white/10 text-gray-500 border border-white/10 px-2 py-0.5 rounded uppercase tracking-wider">Locked</span>
                 </div>
-                <p className="text-gray-600 text-sm leading-relaxed font-medium">Ultimate natural drive and hormone optimization.</p>
+                <p className="text-gray-600 text-xs leading-relaxed font-medium">Ultimate natural drive and hormone optimization.</p>
               </div>
-              <span className="text-[9px] font-black text-gray-600 border border-white/10 px-5 py-2.5 rounded-xl cursor-not-allowed uppercase tracking-widest">Pending</span>
+              <span className="text-[8px] font-black text-gray-600 border border-white/10 px-4 py-2 rounded-lg cursor-not-allowed uppercase tracking-widest">Pending</span>
             </div>
           </div>
         </section>
 
         {/* Bestseller Spotlight */}
-        <section id="pressure" className="mb-24 reveal">
-          <div className="glass-card p-4 rounded-[3.5rem] relative overflow-hidden group border-amber-500/30 shadow-[0_40px_100px_-20px_rgba(212,175,55,0.15)]">
-            <div className="bg-black/90 rounded-[3rem] overflow-hidden border border-white/10 aspect-video md:aspect-[21/9] flex items-center justify-center relative">
+        <section id="pressure" className="mb-20 reveal">
+          <div className="glass-card p-3 rounded-[3rem] relative overflow-hidden group border-amber-500/25 shadow-[0_40px_100px_-20px_rgba(212,175,55,0.1)]">
+            <div className="bg-black/90 rounded-[2.5rem] overflow-hidden border border-white/10 aspect-video md:aspect-[21/9] flex items-center justify-center relative">
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
               <div className="text-center z-20 px-8">
-                <div className="w-20 h-20 bg-amber-500/10 text-amber-500 rounded-3xl flex items-center justify-center mx-auto mb-5 border border-amber-500/20 shadow-[0_0_60px_rgba(212,175,55,0.25)]">
-                  <Zap className="w-10 h-10" />
+                <div className="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/20 shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+                  <Zap className="w-8 h-8" />
                 </div>
-                <h4 className="text-4xl md:text-5xl font-black mb-3 tracking-tighter italic uppercase text-amber-500">PRESSURE</h4>
-                <p className="text-gray-300 text-xs md:text-sm max-w-sm mx-auto font-black leading-relaxed uppercase tracking-[0.2em]">
+                <h4 className="text-3xl md:text-5xl font-black mb-2 tracking-tighter italic uppercase text-amber-500">PRESSURE</h4>
+                <p className="text-gray-300 text-[9px] md:text-xs max-w-sm mx-auto font-black leading-relaxed uppercase tracking-[0.2em]">
                   Elite Daily Performance Protocol.
                 </p>
               </div>
             </div>
-            <div className="p-8 md:p-12 text-center">
-              <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-10">
-                <div className="flex items-center gap-2.5 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[10px] font-black uppercase tracking-widest">Vitality Support</span></div>
-                <div className="flex items-center gap-2.5 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[10px] font-black uppercase tracking-widest">Discrete Shipping</span></div>
-                <div className="flex items-center gap-2.5 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[10px] font-black uppercase tracking-widest">Fast Delivery</span></div>
+            <div className="p-8 text-center">
+              <div className="flex flex-wrap justify-center gap-6 mb-8">
+                <div className="flex items-center gap-2 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[8px] font-black uppercase tracking-widest">Vitality Support</span></div>
+                <div className="flex items-center gap-2 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[8px] font-black uppercase tracking-widest">Discrete Shipping</span></div>
+                <div className="flex items-center gap-2 text-gray-300"><Check className="w-4 h-4 text-amber-500" /> <span className="text-[8px] font-black uppercase tracking-widest">Fast Delivery</span></div>
               </div>
               <button 
                 onClick={handleManualRedirect}
-                className="w-full py-6 bg-amber-500 text-black rounded-2xl font-black text-2xl hover:scale-[1.02] transition-all active:scale-95 shadow-[0_25px_50px_-10px_rgba(212,175,55,0.5)] uppercase italic tracking-tighter"
+                className="w-full py-5 bg-amber-500 text-black rounded-xl font-black text-xl hover:scale-[1.01] transition-all active:scale-95 shadow-[0_20px_40px_-10px_rgba(212,175,55,0.4)] uppercase italic tracking-tighter"
               >
                 Buy PRESSURE Now
               </button>
-              <p className="mono text-[9px] text-gray-700 mt-8 uppercase tracking-[0.5em] font-black">Authorized Official Sales Channel • SSL Secure</p>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="pt-16 border-t border-white/5 text-center reveal">
-          <div className="flex justify-center gap-10 mb-16">
-            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-2"><Instagram className="w-5 h-5" /></a>
-            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-2"><Music className="w-5 h-5" /></a>
-            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-2"><Mail className="w-5 h-5" /></a>
-            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-2"><HelpCircle className="w-5 h-5" /></a>
+        <footer className="pt-12 border-t border-white/5 text-center reveal">
+          <div className="flex justify-center gap-8 mb-12">
+            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-1"><Instagram className="w-5 h-5" /></a>
+            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-1"><Music className="w-5 h-5" /></a>
+            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-1"><Mail className="w-5 h-5" /></a>
+            <a href="#" className="text-gray-700 hover:text-amber-500 transition-all transform hover:-translate-y-1"><HelpCircle className="w-5 h-5" /></a>
           </div>
           
-          <div className="mono text-[9px] text-gray-800 font-bold uppercase tracking-[0.6em] space-y-8">
+          <div className="mono text-[8px] text-gray-800 font-bold uppercase tracking-[0.5em] space-y-6">
             <p>© 2024 MR PLUMBER MAN • VITALITY INFRASTRUCTURE</p>
-            <div className="flex justify-center gap-10 opacity-50">
+            <div className="flex justify-center gap-8 opacity-40">
               <a href="#" className="hover:text-amber-500 transition-colors">Privacy</a>
               <a href="#" className="hover:text-amber-500 transition-colors">FAQ</a>
               <a href="#" className="hover:text-amber-500 transition-colors">Terms</a>
